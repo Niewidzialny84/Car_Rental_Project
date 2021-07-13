@@ -4,6 +4,7 @@ import niewidzialny84.github.rental.entity.Client;
 import niewidzialny84.github.rental.repository.ClientRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class ClientService extends Service implements ClientRepository {
     }
 
     @Override
-    public Client getClientByName(String firstName, String lastName) {
+    public Client getClientByName(String firstName, String lastName) throws NoResultException {
         TypedQuery<Client> q = em.createQuery("SELECT x FROM Client x WHERE x.firstName=:firstName and x.lastName=:lastName", Client.class);
         q.setParameter("firstName",firstName);
         q.setParameter("lastName",lastName);

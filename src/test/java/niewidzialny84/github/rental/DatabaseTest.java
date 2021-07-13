@@ -12,7 +12,6 @@ import org.hibernate.query.Query;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.junit.Assert.*;

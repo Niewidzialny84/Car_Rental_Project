@@ -3,7 +3,6 @@ package niewidzialny84.github.rental.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "clients")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

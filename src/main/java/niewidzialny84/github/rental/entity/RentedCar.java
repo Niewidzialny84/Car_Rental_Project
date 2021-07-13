@@ -7,7 +7,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class RentedCars {
+@Table(name = "rentedcars")
+public class RentedCar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
@@ -30,13 +31,21 @@ public class RentedCars {
     @Temporal(TemporalType.TIMESTAMP)
     private Date returnDate;
 
-    public RentedCars(Long id, Car car, Client client) {
+    public RentedCar() {
+    }
+
+    public RentedCar(Car car, Client client) {
+        this.car = car;
+        this.client = client;
+    }
+
+    public RentedCar(Long id, Car car, Client client) {
         this.id = id;
         this.car = car;
         this.client = client;
     }
 
-    public RentedCars(Long id, Car car, Client client, Date returnDate) {
+    public RentedCar(Long id, Car car, Client client, Date returnDate) {
         this.id = id;
         this.car = car;
         this.client = client;
@@ -79,7 +88,23 @@ public class RentedCars {
         return returnDate;
     }
 
+
+    public void setReturnDate() {
+        this.returnDate = new Date(System.currentTimeMillis());
+    }
+
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
+    }
+
+    @Override
+    public String toString() {
+        return "RentedCar{" +
+                "id=" + id +
+                ", car=" + car +
+                ", client=" + client +
+                ", rentalDate=" + rentalDate +
+                ", returnDate=" + returnDate +
+                '}';
     }
 }

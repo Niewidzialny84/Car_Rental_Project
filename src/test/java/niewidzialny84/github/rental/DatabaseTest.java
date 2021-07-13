@@ -1,47 +1,111 @@
 package niewidzialny84.github.rental;
 
-import junit.framework.TestCase;
 import niewidzialny84.github.rental.entity.Car;
 import niewidzialny84.github.rental.entity.Client;
-import niewidzialny84.github.rental.entity.RentedCars;
+import niewidzialny84.github.rental.entity.RentedCar;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+import org.junit.*;
+import org.junit.runners.MethodSorters;
 
-public class DatabaseTest extends TestCase {
-    private SessionFactory factory;
+import javax.persistence.EntityManager;
+import java.util.List;
 
-    @Override
-    protected void setUp() throws Exception {
-        Configuration configuration = new Configuration()
-                .addAnnotatedClass(Car.class)
-                .addAnnotatedClass(Client.class)
-                .addAnnotatedClass(RentedCars.class)
-                .setProperty("hibernate.connection.driver_class", "org.sqlite.JDBC")
-                .setProperty("hibernate.connection.url", "jdbc:sqlite:sqlite.db")
-                .setProperty("hibernate.dialect", "org.hibernate.dialect.SQLiteDialect")
-                .setProperty("hibernate.show_sql", "true")
-                .setProperty("hibernate.hdm2ddl.auto", "create-drop");
+import static org.junit.Assert.*;
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class DatabaseTest {
+    private static SessionFactory factory;
+    private static Car car;
+    private static Client client;
+
+    @BeforeClass
+    public static void setUp() throws Exception {
+        Configuration configuration = new Configuration();
         configuration.configure();
 
         factory = new Configuration().configure().buildSessionFactory();
+
+        car = new Car("BWM","Model X");
+        client = new Client("John","Connor");
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @AfterClass
+    public static void tearDown() throws Exception {
         if (factory != null) {
             factory.close();
         }
     }
 
-    public void testCarAdd() {
-        Session session = factory.openSession();
-        session.getTransaction();
-        session.persist(new Car("BWM","Model W"));
-        session.getTransaction().commit();
+    protected Session session;
+    protected Transaction tx;
+
+    @Before
+    public void init() {
+        session = factory.openSession();
+        tx = session.beginTransaction();
+    }
+
+    @After
+    public void finish() {
+        tx.commit();
         session.close();
     }
 
+    @Test
+    public void testCarAdd() {
+        session.save(car);
+    }
 
+    @Test
+    public void testCarList() {
+        Query q = session.createQuery("FROM Car WHERE brand=:brand and model=:model");
+        q.setParameter("brand",car.getBrand());
+        q.setParameter("model",car.getModel());
+        List cars = q.getResultList();
+        for(Object c : cars) {
+            if (car.equals(c)) {
+                q = session.createQuery("DELETE FROM Car WHERE brand=:brand and model=:model");
+                q.setParameter("brand",car.getBrand());
+                q.setParameter("model",car.getModel());
+                q.executeUpdate();
+                return;
+            }
+        }
+        fail("Did not find car");
+    }
+
+    @Test
+    public void testClientAdd() {
+        session.save(client);
+    }
+
+    @Test
+    public void testClientDelete() {
+        Query q = session.createQuery("DELETE FROM Client WHERE firstName=:firstName and lastName=:lastName");
+        q.setParameter("firstName",client.getFirstName());
+        q.setParameter("lastName",client.getLastName());
+        q.executeUpdate();
+    }
+
+    @Test
+    public void testRentingCar() {
+        session.save(client);
+        session.save(car);
+        RentedCar cars = new RentedCar(car,client);
+        session.save(cars);
+
+        System.out.println(cars);
+
+        cars.setReturnDate();
+        System.out.println(cars);
+
+        session.delete(cars);
+        session.delete(car);
+        session.delete(client);
+    }
 }

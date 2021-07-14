@@ -9,20 +9,22 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import org.junit.*;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.*;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+/*
+Test class used a simple testing ground and some deciding factor how to go with app
+ */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DatabaseTest {
     private static SessionFactory factory;
     private static Car car;
     private static Client client;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws Exception {
         Configuration configuration = new Configuration();
         configuration.configure();
@@ -33,7 +35,7 @@ public class DatabaseTest {
         client = new Client("John","Connor");
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() throws Exception {
         if (factory != null) {
             factory.close();
@@ -43,24 +45,26 @@ public class DatabaseTest {
     protected Session session;
     protected Transaction tx;
 
-    @Before
+    @BeforeEach
     public void init() {
         session = factory.openSession();
         tx = session.beginTransaction();
     }
 
-    @After
+    @AfterEach
     public void finish() {
         tx.commit();
         session.close();
     }
 
     @Test
+    @Order(1)
     public void testCarAdd() {
         session.save(car);
     }
 
     @Test
+    @Order(2)
     public void testCarList() {
         Query q = session.createQuery("FROM Car WHERE brand=:brand and model=:model");
         q.setParameter("brand",car.getBrand());
@@ -79,11 +83,13 @@ public class DatabaseTest {
     }
 
     @Test
+    @Order(3)
     public void testClientAdd() {
         session.save(client);
     }
 
     @Test
+    @Order(4)
     public void testClientDelete() {
         Query q = session.createQuery("DELETE FROM Client WHERE firstName=:firstName and lastName=:lastName");
         q.setParameter("firstName",client.getFirstName());
@@ -92,6 +98,7 @@ public class DatabaseTest {
     }
 
     @Test
+    @Order(5)
     public void testRentingCar() {
         session.save(client);
         session.save(car);

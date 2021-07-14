@@ -50,6 +50,14 @@ public class RentedCar {
         this.returnDate = returnDate;
     }
 
+    public RentedCar(Long id, Car car, Client client, Date rentalDate, Date returnDate) {
+        this.id = id;
+        this.car = car;
+        this.client = client;
+        this.rentalDate = rentalDate;
+        this.returnDate = returnDate;
+    }
+
     public Long getId() {
         return id;
     }
@@ -85,7 +93,6 @@ public class RentedCar {
     public Date getReturnDate() {
         return returnDate;
     }
-
 
     public void setReturnDate() {
         this.returnDate = new Date(System.currentTimeMillis());

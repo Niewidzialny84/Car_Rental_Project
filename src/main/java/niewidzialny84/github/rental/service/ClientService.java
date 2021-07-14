@@ -30,6 +30,7 @@ public class ClientService extends Service implements ClientRepository {
         TypedQuery<Client> q = em.createQuery("SELECT x FROM Client x WHERE x.firstName=:firstName and x.lastName=:lastName", Client.class);
         q.setParameter("firstName",firstName);
         q.setParameter("lastName",lastName);
+        q.setMaxResults(1);
         return q.getSingleResult();
     }
 

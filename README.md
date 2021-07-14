@@ -39,7 +39,7 @@ Deleting client or car will delete all of their history.
 
 `POST /client` - adds new client using query parameters `firstName` and `lastName`, return code `201` with created resource or `400` if invalid parameters were set.
 
-`PATCH /client/:id`
+`PATCH /client/:id` - updates existing client specified by `:id` using query parameters `firstName` and `lastName`, returns `200` with resource or `404` if client not found.
 
 `DELETE /client/:id` - removes client specified by `:id`, returns `204` or `404` if client not found.
 

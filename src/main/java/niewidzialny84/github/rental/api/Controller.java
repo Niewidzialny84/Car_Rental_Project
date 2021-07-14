@@ -66,7 +66,7 @@ public class Controller {
                 }, gson::toJson);
                 post("", (req,res) -> {
                     if(req.queryParams("brand") != null && req.queryParams("model") != null) {
-                        Car car = carService.saveCar(new Car(req.queryParams("brand"),req.queryParams("model")));
+                        var car = carService.saveCar(new Car(req.queryParams("brand"),req.queryParams("model")));
                         res.status(201);
                         res.header("Location",req.url()+"/"+car.getId());
                         return car;
@@ -76,7 +76,7 @@ public class Controller {
                     }
                 }, gson::toJson);
                 patch("/:id", (req,res) -> {
-                    Car car = carService.getCarById(Long.decode(req.params(":id")));
+                    var car = carService.getCarById(Long.decode(req.params(":id")));
                     if (car == null) {
                         res.status(404);
                         return new Message("Car Not Found");
@@ -137,6 +137,23 @@ public class Controller {
                         return new Message("Invalid parameters");
                     }
                 }, gson::toJson);
+                patch("/:id",(req,res)-> {
+                    var client = clientService.getClientById(Long.decode(req.params(":id")));
+                    if (client == null) {
+                        res.status(404);
+                        return new Message("Client Not Found");
+                    }
+
+                    if (req.queryParams("firstName") != null) {
+                        client.setFirstName(req.queryParams("firstName"));
+                    }
+
+                    if (req.queryParams("lastName") != null) {
+                        client.setLastName(req.queryParams("lastName"));
+                    }
+                    clientService.saveClient(client);
+                    return client;
+                },gson::toJson);
                 delete("/:id", (req,res) -> {
                     var x = clientService.getClientById(Long.decode(req.params(":id")));
                     if (x != null) {

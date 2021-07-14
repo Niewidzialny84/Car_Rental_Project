@@ -55,6 +55,22 @@ Deleting client or car will delete all of their history.
 
 ### Requirements
 
+Java 10+ is required to run packaged file. To build JDK in same version as well as IDE with maven.
+
 ### Running
 
+To run application simply download the latest release from github releases and run command
+
+```shell
+ > java -jar Car_Rental_Project.jar
+ ```
+
+If not provided with `sqlite.db` will create it in where it was run. The `sqlite.db` can be provided int the same folder as running folder 
+meaning that if app was run in `C:/Folder` the database should be in `C:Folder`.
+
+Application in runtime prints log into the console, such as starting configuration or accessing specific endpoint with corresponding method.
+
 ### Building
+
+To build app yourself import this project into any IDE that provides maven as maven project,
+allow it to download all dependencies and execute default build. Also `mvn clean build` can be used.

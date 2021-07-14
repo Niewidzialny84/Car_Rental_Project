@@ -19,7 +19,7 @@ import static spark.Spark.*;
 
 public class Controller {
     private final int PORT;
-    private final Logger logger = LoggerFactory.getLogger(Controller.class);
+    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
 
     private final SessionFactory factory;
     private final EntityManager entityManager;

@@ -4,6 +4,7 @@ import niewidzialny84.github.rental.entity.Car;
 import niewidzialny84.github.rental.repository.CarRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 
 public class CarService extends Service implements CarRepository {
@@ -34,6 +35,9 @@ public class CarService extends Service implements CarRepository {
     @Override
     public void deleteCar(Car car) {
         if(em.contains(car)) {
+            Query q = em.createQuery("DELETE FROM RentedCar x WHERE x.car.id=:id");
+            q.setParameter("id",car.getId());
+            q.executeUpdate();
             em.remove(car);
         } else {
             em.merge(car);

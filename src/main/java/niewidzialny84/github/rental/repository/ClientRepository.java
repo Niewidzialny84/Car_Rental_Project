@@ -13,7 +13,5 @@ public interface ClientRepository {
 
     Client saveClient(Client client);
 
-    void deleteClientById(Long id);
-
     void deleteClient(Client client);
 }

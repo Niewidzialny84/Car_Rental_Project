@@ -17,5 +17,5 @@ public interface RentedCarRepository {
 
     RentedCar rentCar(Car car, Client client);
 
-    RentedCar returnCar(Car car, Client client);
+    RentedCar returnCar(Long id);
 }

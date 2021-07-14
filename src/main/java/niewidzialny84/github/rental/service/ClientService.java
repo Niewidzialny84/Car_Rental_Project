@@ -5,6 +5,7 @@ import niewidzialny84.github.rental.repository.ClientRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -43,15 +44,11 @@ public class ClientService extends Service implements ClientRepository {
     }
 
     @Override
-    public void deleteClientById(Long id) {
-        TypedQuery<Client> q = em.createQuery("DELETE x FROM Client x WHERE x.id=:id", Client.class);
-        q.setParameter("id",id);
-        q.executeUpdate();
-    }
-
-    @Override
     public void deleteClient(Client client) {
         if (em.contains(client)) {
+            Query q = em.createQuery("DELETE FROM RentedCar x WHERE x.client.id=:id");
+            q.setParameter("id",client.getId());
+            q.executeUpdate();
             em.remove(client);
         } else {
             em.merge(client);

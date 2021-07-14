@@ -6,6 +6,8 @@ import niewidzialny84.github.rental.entity.RentedCar;
 import niewidzialny84.github.rental.repository.RentedCarRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class RentedCarService extends Service implements RentedCarRepository {
@@ -43,12 +45,26 @@ public class RentedCarService extends Service implements RentedCarRepository {
     }
 
     @Override
-    public RentedCar rentCar(Car car, Client client) {
-        return new RentedCar(car,client);
+    public RentedCar rentCar(Car car, Client client) throws NoResultException {
+        TypedQuery<RentedCar> q = em.createQuery("SELECT x FROM RentedCar x WHERE x.car.id=:car AND x.returnDate=NULL",RentedCar.class);
+        q.setParameter("car",car.getId());
+        List<RentedCar> r = q.getResultList();
+        if(r.size() > 0) {
+            throw new NoResultException("Car Already Rented");
+        }
+        return saveRentedCar(new RentedCar(car,client));
     }
 
     @Override
-    public RentedCar returnCar(Car car, Client client) {
-        return null;
+    public RentedCar returnCar(Long id) throws NoResultException{
+        var car = getRentedCarById(id);
+
+        if(car == null) {
+            throw new NoResultException("Record Not Found");
+        }
+
+        car.setReturnDate();
+
+        return saveRentedCar(car);
     }
 }

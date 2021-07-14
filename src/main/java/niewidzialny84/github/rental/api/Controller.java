@@ -160,8 +160,35 @@ public class Controller {
                         return new Message("Rental Record Not Found");
                     }
                 }, gson::toJson);
-                post("", (req,res)->null,gson::toJson);
-                post("/:id", (req,res)->null,gson::toJson);
+                post("", (req,res)-> {
+                    if (req.queryParams("carId") == null || req.queryParams("clientId") == null) {
+                        res.status(400);
+                        return new Message("Invalid parameters");
+                    }
+
+                    var car = carService.getCarById(Long.decode(req.queryParams("carId")));
+                    var client = clientService.getClientById(Long.decode(req.queryParams("clientId")));
+
+                    if(car == null || client == null) {
+                        res.status(404);
+                        return new Message("Not found Identifiers");
+                    }
+
+                    try {
+                        return rentedCarService.rentCar(car, client);
+                    } catch (NoResultException e) {
+                        res.status(400);
+                        return new Message(e.getMessage());
+                    }
+                    },gson::toJson);
+                post("/:id", (req,res)-> {
+                    try {
+                        return rentedCarService.returnCar(Long.decode(req.params(":id")));
+                    } catch (NoResultException e) {
+                        res.status(404);
+                        return new Message(e.getMessage());
+                    }
+                },gson::toJson);
             });
             after("/*",(req,res)-> {
                 res.type("application/json");

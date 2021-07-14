@@ -15,7 +15,7 @@ Client and RentedCar which is also presented in a schema below.
 
 ### Available Endpoints
 Here is a list of all available endpoints with short descriptions. 
-Testing requests for Postman can be found [here]()
+Testing requests for Postman can be found in [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/11457881-114dc96d-4eb7-4679-8bb9-1ba45f74fe05?action=collection%2Ffork&collection-url=entityId%3D11457881-114dc96d-4eb7-4679-8bb9-1ba45f74fe05%26entityType%3Dcollection%26workspaceId%3D0dd04768-a677-4050-8371-8b4fc452a7b4#?env%5BRental%20Car%5D=W3sia2V5Ijoic3RhcnRfdXJsIiwidmFsdWUiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvYXBpIiwiZW5hYmxlZCI6dHJ1ZX1d)
 
 All routes have a root path `/api` meaning that accessing for e.g. resource `x` would be described by `http://url.com/api/x`
 

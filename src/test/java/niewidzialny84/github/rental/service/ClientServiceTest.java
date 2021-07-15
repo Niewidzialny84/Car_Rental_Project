@@ -39,6 +39,8 @@ public class ClientServiceTest extends ServiceAbstractTest{
 
     @Test
     public void getFromName() {
+        saveNew();
+
         var client = service.getClientByName("John","Connor");
         assertNotNull(client);
         assertNotNull(client.getId());

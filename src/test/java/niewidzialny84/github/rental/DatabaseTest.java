@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /*
 Test class used a simple testing ground and some deciding factor how to go with app
  */
+@Disabled("Not used for now")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DatabaseTest {
     private static SessionFactory factory;
@@ -54,7 +55,6 @@ public class DatabaseTest {
     @AfterEach
     public void finish() {
         tx.commit();
-        session.close();
     }
 
     @Test

@@ -1,7 +1,6 @@
 package niewidzialny84.github.rental.service;
 
 import niewidzialny84.github.rental.entity.Car;
-import niewidzialny84.github.rental.entity.CarTest;
 import niewidzialny84.github.rental.entity.Client;
 import niewidzialny84.github.rental.entity.RentedCar;
 import org.junit.jupiter.api.Test;
